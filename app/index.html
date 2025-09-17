@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>TBank Logo Detector</title>
+  <link rel="icon" type="image/svg+xml" href="https://cdn.tbank.ru/static/pfa-multimedia/images/33447f85-5b92-42f9-8d88-509bd152b47c.svg">
+  <style>
+  body {
+    font-family: sans-serif;
+    margin: 2rem;
+    background-color: #f0f0f0;
+  }
+  h2 {
+    text-align: center;
+  }
+  form {
+    text-align: center;
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+  .container {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  .json-block {
+    flex: 1;
+  }
+  .image-block {
+    flex: 1;
+    max-width: 600px;
+    background: #fff;
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+  }
+  pre {
+    background: #dddddd;
+    padding: 1rem;
+    border-radius: 8px;
+    max-height: 500px;
+    overflow: auto;
+  }
+  img {
+    max-width: 100%;
+    height: auto;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    object-fit: contain;
+  }
+  button, .file-label {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 20px;
+    background-color: #ffdd33;
+    color: #222;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  button:hover, .file-label:hover {
+    background-color: #ffcc00;
+  }
+  .file-input {
+    display: none;
+  }
+  .filename {
+    font-style: italic;
+    color: #444;
+  }
+</style>
+
+</head>
+<body>
+  <h2>TBank Logo Detector</h2>
+  <form id="uploadForm">
+  <label for="fileInput" class="file-label">📂 Выбрать файл</label>
+  <input id="fileInput" class="file-input" type="file" name="file" accept="image/*">
+  <span class="filename" id="filename">Файл не выбран</span>
+  <button type="submit">Загрузить</button>
+</form>
+
+
+  <div class="container">
+  <div class="json-block">
+    <h3>JSON</h3>
+    <pre id="jsonOutput"></pre>
+    <button id="copyBtn">📋 Скопировать JSON</button>
+  </div>
+  <div class="image-block">
+    <img id="imageOutput" alt="Результат появится здесь"/>
+  </div>
+</div>
+
+  <script>
+  const form = document.getElementById("uploadForm");
+  const fileInput = document.getElementById("fileInput");
+  const filenameSpan = document.getElementById("filename");
+  const jsonOutput = document.getElementById("jsonOutput");
+  const copyBtn = document.getElementById("copyBtn");
+
+  fileInput.addEventListener("change", () => {
+    filenameSpan.textContent = fileInput.files.length > 0
+      ? fileInput.files[0].name
+      : "Файл не выбран";
+  });
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+    const response = await fetch("/detect_ui", { method: "POST", body: formData });
+    const data = await response.json();
+    jsonOutput.textContent = JSON.stringify(data.detections, null, 2);
+    document.getElementById("imageOutput").src = data.image;
+  });
+
+  copyBtn.addEventListener("click", () => {
+    navigator.clipboard.writeText(jsonOutput.textContent);
+    copyBtn.textContent = "✅ Скопировано!";
+    setTimeout(() => copyBtn.textContent = "📋 Скопировать JSON", 1500);
+  });
+</script>
+
+</body>
+</html>
