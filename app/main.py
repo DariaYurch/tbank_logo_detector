@@ -30,14 +30,14 @@ class ErrorResponse(BaseModel):
 
 
 app = FastAPI(title="Т-Bank Logo Detector")
-model = YOLO("best_11.pt")
-app.mount("/static", StaticFiles(directory="static"), name="static")
+model = YOLO("data/best_11.pt")
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 
 
 @app.get("/", response_class=HTMLResponse)
 async def index():
-    with open("index.html", "r", encoding="utf-8") as f:
+    with open("app/index.html", "r", encoding="utf-8") as f:
         return HTMLResponse(content=f.read())
 
 #эндпоинт согласно кейсу:
