@@ -13,7 +13,7 @@ git clone https://github.com/DariaYurch/tbank_logo_detector.git
 ```
 - Перейдите в папку проекта:
 ```
-cd tbank-logo-detector
+cd tbank_logo_detector
 ```
 - Запустите сборки и сервиса (может занять много времени засчет установки библиотек из requiremets.txt):
 ```
