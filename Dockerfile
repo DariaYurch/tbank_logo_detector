@@ -10,9 +10,9 @@ RUN pip install --no-cache-dir \
 
 RUN sed -e '/^torch==/d' -e '/^torchvision==/d' requirements.txt > requirements_no_torch.txt \
     && pip install --no-cache-dir -r requirements_no_torch.txt
-
+    
 RUN apt-get update && \
-    apt-get install -y ffmpeg libsm6 libxext6 && \
+    apt-get install -y --no-install-recommends ffmpeg libsm6 libxext6 && \
     rm -rf /var/lib/apt/lists/*
 
 COPY app ./app
