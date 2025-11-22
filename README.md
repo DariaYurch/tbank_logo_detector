@@ -15,14 +15,10 @@ git clone https://github.com/DariaYurch/tbank_logo_detector.git
 ```
 cd tbank-logo-detector
 ```
-- Запустите сборку Docker-образа (может занять много времени):
+- Запустите сборки и сервиса (может занять много времени засчет установки библиотек из requiremets.txt):
 ```
-docker build -t tbank-logo-detector .
-```
-- Запустите контейнер:
-```
-docker run -it --rm -p 8000:8000 tbank-logo-detector
-```
+docker compose up
+```  
 После этого откройте в браузере: http://127.0.0.1:8000  
 Появится следующая страница:  
 <img src="https://github.com/DariaYurch/tbank_logo_detector/blob/main/images/Pasted%20image%2020250917225358.png" width="600"/>
